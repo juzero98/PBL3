@@ -1,19 +1,45 @@
 package com.example.myapplication2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
-import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.firestore.FirebaseFirestore;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import com.google.firebase.firestore.*;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements Tab1Fragment.OnMyListener, Tab2Fragment.OnMyListener, Tab3Fragment.OnMyListener, Tab4Fragment.OnMyListener, Tab5Fragment.OnMyListener {
+public class MainActivity extends AppCompatActivity implements
+        Tab1Fragment.OnMyListener, Tab2Fragment.OnMyListener,
+        Tab3Fragment.OnMyListener, Tab4Fragment.OnMyListener, Tab5Fragment.OnMyListener  {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private SlidingUpPanelLayout mLayout;
 
@@ -24,12 +50,16 @@ public class MainActivity extends AppCompatActivity implements Tab1Fragment.OnMy
     //
     private SectionsPageAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
+
+    String search_name;
+    int category;
+
     //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //
         mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
 
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -37,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements Tab1Fragment.OnMy
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
+        //
 
         mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         if (mLayout != null) {
@@ -45,9 +75,15 @@ public class MainActivity extends AppCompatActivity implements Tab1Fragment.OnMy
             mLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
 
         }
+//
+        // position  = tabLayout.getSelectedTabPosition();
+        // category = mViewPager.getAdapter().getPageTitle(position).toString();
+
+
+
     }
 
-
+    //
     private void setupViewPager(ViewPager viewPager) {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
         adapter.addFragment(new Tab1Fragment(), "채소");
@@ -58,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements Tab1Fragment.OnMy
 
         viewPager.setAdapter(adapter);
     }
+    //
 
     public void onReceivedData(Object data){
         Intent intent = new Intent(this, DetailActivity.class);
@@ -69,4 +106,17 @@ public class MainActivity extends AppCompatActivity implements Tab1Fragment.OnMy
         intent.putExtra("country",datas[4]);
         startActivity(intent);
     }
+
+    public void goData(String text, int i)
+    {
+        search_name= text;
+        category = i;
+
+        Intent intent = new Intent(this, SearchActivity.class);
+        intent.putExtra("search_name", search_name);
+        intent.putExtra("category", category);
+        startActivity(intent);
+    }
+
+
 }

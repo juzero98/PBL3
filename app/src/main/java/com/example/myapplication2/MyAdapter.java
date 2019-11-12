@@ -39,15 +39,15 @@ public class MyAdapter extends BaseAdapter {
     }
 
     @Override
-        public View getView(int position, View view, ViewGroup viewGroup) {
-            if (view == null) {
-                LayoutInflater inflater = LayoutInflater.from(ctx);
-                view = inflater.inflate(R.layout.list, viewGroup, false);
-            }
-            position %= data.size();
-            ImageView image = (ImageView) view.findViewById(R.id.image);
-            TextView text1 = (TextView) view.findViewById(R.id.text1);
-            TextView text2 = (TextView) view.findViewById(R.id.text2);
+    public View getView(int position, View view, ViewGroup viewGroup) {
+        if (view == null) {
+            LayoutInflater inflater = LayoutInflater.from(ctx);
+            view = inflater.inflate(R.layout.list, viewGroup, false);
+        }
+        position %= data.size();
+        ImageView image = (ImageView) view.findViewById(R.id.image);
+        TextView text1 = (TextView) view.findViewById(R.id.text1);
+        TextView text2 = (TextView) view.findViewById(R.id.text2);
 
         MyData m = data.get(position);
         Glide.with(view)
@@ -60,8 +60,5 @@ public class MyAdapter extends BaseAdapter {
 
         return view;
     }
-
-
-
 
 }

@@ -7,8 +7,7 @@
     android:padding="5dp"
     tools:context=".DetailActivity"
     android:layout_gravity="center"
-    android:gravity="center"
-    >
+    android:gravity="center">
 
     <ImageView
         android:id="@+id/img"

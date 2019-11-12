@@ -2,11 +2,16 @@ package com.example.myapplication2;
 
 import android.content.Context;
 import android.os.Bundle;
+
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,25 +25,39 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-
 public class Tab4Fragment extends Fragment {
-    private static final String TAG = "Tab4Fragment";
+    private static final String TAG = "Tab1Fragment";
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ArrayList<MyData> mData = new ArrayList<MyData>();
     private GridView mGrid;
     private MyAdapter mAdapter;
     View view;
-    Context ctx;
+
+    private EditText search_name;
+    private Button search_btn;
+    private int category_num = 4;
+
+
     int count = 0;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.tab_fragment, container, false);
-        ctx = this.getActivity();
+        view = inflater.inflate(R.layout.tab1_fragment, container, false);
         menu();
         return view;
+    }
+
+    public void sOnClick(){
+        search_name = (EditText) getView().findViewById(R.id.search_name);
+        search_btn = (Button) getView().findViewById(R.id.search_btn);
+        search_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).goData(search_name.getText().toString(), category_num);
+            }
+        });
     }
 
     public void menu() {
@@ -55,6 +74,7 @@ public class Tab4Fragment extends Fragment {
                                     mData.add(new MyData(document.get("img").toString(), document.get("name").toString(), Integer.parseInt(document.get("price").toString())));
                             }
                             upload();
+                            sOnClick();
                             count++;
                         } else {
 
@@ -62,6 +82,7 @@ public class Tab4Fragment extends Fragment {
                     }
                 });
     }
+
 
     public void upload() {
         mGrid = (GridView) view.findViewById(R.id.grid);
@@ -95,10 +116,9 @@ public class Tab4Fragment extends Fragment {
 
                                 if (mOnMyListener != null)
                                     mOnMyListener.onReceivedData(datas);
-
                             }
                         } else {
-
+                            //Toast.makeText(MainActivity.this, "fail", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -117,6 +137,5 @@ public class Tab4Fragment extends Fragment {
             mOnMyListener = (OnMyListener) getActivity();
         }
     }
-
 
 }
