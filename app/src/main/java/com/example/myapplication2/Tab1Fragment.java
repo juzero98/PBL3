@@ -1,7 +1,6 @@
 package com.example.myapplication2;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +35,7 @@ public class Tab1Fragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.tab1_fragment, container, false);
+        view = inflater.inflate(R.layout.tab_fragment, container, false);
         ctx = this.getActivity();
         menu();
         return view;
